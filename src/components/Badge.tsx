@@ -11,36 +11,15 @@ type Props = {
 const defaultTextColor = '#303235';
 
 export const Badge = (props: Props) => {
-  let liteBadge: HTMLAnchorElement | undefined;
-  let observer: MutationObserver | undefined;
-
-  const appendBadgeIfNecessary = (mutations: MutationRecord[]) => {
-    mutations.forEach((mutation) => {
-      mutation.removedNodes.forEach((removedNode) => {
-        if ('id' in removedNode && liteBadge && removedNode.id == 'lite-badge') {
-          console.log("Sorry, you can't remove the brand 😅");
-          props.botContainer?.append(liteBadge);
-        }
-      });
-    });
-  };
-
-  onMount(() => {
-    if (!document || !props.botContainer) return;
-    observer = new MutationObserver(appendBadgeIfNecessary);
-    observer.observe(props.botContainer, {
-      subtree: false,
-      childList: true,
-    });
-  });
-
-  onCleanup(() => {
-    if (observer) observer.disconnect();
-  });
-
   return (
     <>
-      <Show when={props.footer?.showFooter === undefined || props.footer?.showFooter === null || props.footer?.showFooter === true}>
+      <Show
+        when={
+          props.footer?.showFooter === undefined ||
+          props.footer?.showFooter === null ||
+          props.footer?.showFooter === true
+        }
+      >
         <span
           class="w-full text-center px-[10px] pt-[6px] pb-[10px] m-auto text-[13px]"
           style={{
@@ -50,15 +29,14 @@ export const Badge = (props: Props) => {
         >
           {props.footer?.text ?? 'Powered by'}
           <a
-            ref={liteBadge}
-            href={props.footer?.companyLink ?? 'https://flowiseai.com'}
+            href={props.footer?.companyLink ?? 'https://avantscape.com'}
             target="_blank"
             rel="noopener noreferrer"
             class="lite-badge"
             id="lite-badge"
             style={{ 'font-weight': 'bold', color: props.footer?.textColor ?? props.poweredByTextColor ?? defaultTextColor }}
           >
-            <span>&nbsp;{props.footer?.company ?? 'Flowise'}</span>
+            <span>&nbsp;{props.footer?.company ?? 'Avantscape'}</span>
           </a>
         </span>
       </Show>
